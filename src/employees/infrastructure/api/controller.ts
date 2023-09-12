@@ -6,12 +6,11 @@ import {
   Patch,
   Param,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { EmployeesService } from '../../application/service';
 import { CreateEmployeeDTO } from '../../domain/create.dto';
 import { UpdateEmployeeDTO } from '../../domain/update.dto';
-import { StandardResponse } from 'src/shared/infrastructure/api/response';
-import { Employees } from 'src/employees/domain/employee.dto';
 
 @Controller('/v1/employees')
 export class EmployeesController {
@@ -24,29 +23,27 @@ export class EmployeesController {
 
   @Get()
   async findAll() {
-    const response: StandardResponse<Employees> = {
-      data: await this.employeesService.findAll(),
-      successfulMessage: 'ok',
-    };
-
-    return response;
+    return await this.employeesService.findAll();
   }
 
   @Get('/:id')
-  async findOne(@Param('id') id: string) {
+  async findOne(
+    @Param('id', ParseUUIDPipe)
+    id: string,
+  ) {
     return this.employeesService.findOne(id);
   }
 
   @Patch('/:id')
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateEmployeeDto: UpdateEmployeeDTO,
   ) {
     return this.employeesService.update(id, updateEmployeeDto);
   }
 
   @Delete('/:id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.employeesService.remove(id);
   }
 }
