@@ -2,29 +2,34 @@ import { Injectable } from '@nestjs/common';
 import { UpdateEmployeeDTO as UpdateEmployeeDTO } from '../domain/update.dto';
 import { CreateEmployeeDTO as CreateEmployeeDTO } from '../domain/create.dto';
 import { Storage } from './ports';
-import { Employee, Employees } from '../domain/employee';
+import { Employee, Employees } from '../domain/employee.dto';
 
 @Injectable()
 export class EmployeesService {
   constructor(private readonly storage: Storage) {}
 
-  create(createEmployeeDto: CreateEmployeeDTO) {
-    this.storage.create(createEmployeeDto);
+  // commands
+  async create(createEmployeeDto: CreateEmployeeDTO): Promise<void> {
+    return this.storage.create(createEmployeeDto);
   }
 
-  findAll(): Employees {
-    return this.findAll();
+  async update(
+    id: string,
+    updateEmployeeDto: UpdateEmployeeDTO,
+  ): Promise<void> {
+    return this.storage.update(id, updateEmployeeDto);
   }
 
-  findOne(id: string): Employee {
-    return this.findOne(id);
+  async remove(id: string): Promise<void> {
+    return this.storage.remove(id);
   }
 
-  update(id: string, updateEmployeeDto: UpdateEmployeeDTO) {
-    return this.update(id, updateEmployeeDto);
+  // queries
+  async findAll(): Promise<Employees> {
+    return this.storage.findAll();
   }
 
-  remove(id: string) {
-    return this.remove(id);
+  async findOne(id: string): Promise<Employee> {
+    return this.storage.findOne(id);
   }
 }

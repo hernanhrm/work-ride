@@ -11,33 +11,34 @@ import { EmployeesService } from '../../application/service';
 import { CreateEmployeeDTO } from '../../domain/create.dto';
 import { UpdateEmployeeDTO } from '../../domain/update.dto';
 import { StandardResponse } from 'src/shared/infrastructure/api/response';
-import { Employees } from 'src/employees/domain/employee';
+import { Employees } from 'src/employees/domain/employee.dto';
 
 @Controller('/v1/employees')
 export class EmployeesController {
-  constructor(private readonly employeesService: EmployeesService) {}
+  constructor(private employeesService: EmployeesService) {}
 
   @Post()
-  create(@Body() createEmployeeDto: CreateEmployeeDTO) {
-    return this.employeesService.create(createEmployeeDto);
+  async create(@Body() createEmployeeDto: CreateEmployeeDTO) {
+    return await this.employeesService.create(createEmployeeDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     const response: StandardResponse<Employees> = {
-      data: this.employeesService.findAll(),
+      data: await this.employeesService.findAll(),
       successfulMessage: 'ok',
     };
+
     return response;
   }
 
   @Get('/:id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.employeesService.findOne(id);
   }
 
   @Patch('/:id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateEmployeeDto: UpdateEmployeeDTO,
   ) {
@@ -45,7 +46,7 @@ export class EmployeesController {
   }
 
   @Delete('/:id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.employeesService.remove(id);
   }
 }

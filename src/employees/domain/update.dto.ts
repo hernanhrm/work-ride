@@ -1,6 +1,9 @@
-export interface UpdateEmployeeDTO {
-  ID: string;
-  Name: string;
-  Address: string;
-  UpdatedAt: string;
+import { IsNotEmpty, IsString } from 'class-validator';
+
+export class UpdateEmployeeDTO {
+  @IsNotEmpty({ message: 'Debes enviar el nombre del empleado' })
+  name: string;
+
+  @IsString()
+  address?: string;
 }
