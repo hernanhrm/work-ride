@@ -6,42 +6,52 @@ import {
   Patch,
   Param,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
-import { DriversService } from '../../application/service';
-import { CreateDriverDto } from '../../domain/create.dto';
-import { UpdateDriverDto } from '../../domain/update.dto';
+import { DriversService as Service } from '../../application/service';
+import { CreateDriverDto as CreateDto } from '../../domain/create.dto';
+import { UpdateDriverDto as UpdateDto } from '../../domain/update.dto';
+import { ResourcePermissions } from 'src/auth/permissions.guard';
+
+const RESOURCE = 'DRIVERS';
 
 @Controller('/v1/drivers')
 export class DriversController {
-  constructor(private readonly driversService: DriversService) {}
+  constructor(private readonly service: Service) {}
 
   // commands
   @Post()
-  async create(@Body() createDriverDto: CreateDriverDto) {
-    return await this.driversService.create(createDriverDto);
+  @ResourcePermissions(RESOURCE, 'create')
+  async create(@Body() dto: CreateDto) {
+    return await this.service.create(dto);
   }
 
   @Patch('/:id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateDriverDto: UpdateDriverDto,
-  ) {
-    return await this.driversService.update(id, updateDriverDto);
+  @ResourcePermissions(RESOURCE, 'update')
+  async update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateDto) {
+    return await this.service.update(id, dto);
   }
 
   @Delete('/:id')
-  async remove(@Param('id') id: string) {
-    return await this.driversService.remove(id);
+  @ResourcePermissions(RESOURCE, 'remove')
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.service.remove(id);
   }
 
   // queries
+
   @Get()
+  @ResourcePermissions(RESOURCE, 'findAll')
   async findAll() {
-    return await this.driversService.findAll();
+    return await this.service.findAll();
   }
 
   @Get('/:id')
-  async findOne(@Param('id') id: string) {
-    return await this.driversService.findOne(id);
+  @ResourcePermissions(RESOURCE, 'findOne')
+  async findOne(
+    @Param('id', ParseUUIDPipe)
+    id: string,
+  ) {
+    return await this.service.findOne(id);
   }
 }

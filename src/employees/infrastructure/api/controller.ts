@@ -8,46 +8,50 @@ import {
   Delete,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { EmployeesService } from '../../application/service';
-import { CreateEmployeeDTO } from '../../domain/create.dto';
-import { UpdateEmployeeDTO } from '../../domain/update.dto';
+import { EmployeesService as Service } from '../../application/service';
+import { CreateEmployeeDTO as CreateDto } from '../../domain/create.dto';
+import { UpdateEmployeeDTO as UpdateDto } from '../../domain/update.dto';
 import { ResourcePermissions } from 'src/auth/permissions.guard';
+
+const RESOURCE = 'EMPLOYEES';
 
 @Controller('/v1/employees')
 export class EmployeesController {
-  constructor(private employeesService: EmployeesService) {}
+  constructor(private service: Service) {}
+
   // commands
   @Post()
-  async create(@Body() createEmployeeDto: CreateEmployeeDTO) {
-    return await this.employeesService.create(createEmployeeDto);
+  @ResourcePermissions(RESOURCE, 'create')
+  async create(@Body() dto: CreateDto) {
+    return await this.service.create(dto);
   }
 
   @Patch('/:id')
-  async update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateEmployeeDto: UpdateEmployeeDTO,
-  ) {
-    return await this.employeesService.update(id, updateEmployeeDto);
+  @ResourcePermissions(RESOURCE, 'update')
+  async update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateDto) {
+    return await this.service.update(id, dto);
   }
 
   @Delete('/:id')
+  @ResourcePermissions(RESOURCE, 'remove')
   async remove(@Param('id', ParseUUIDPipe) id: string) {
-    return await this.employeesService.remove(id);
+    return await this.service.remove(id);
   }
 
   // queries
 
   @Get()
-  @ResourcePermissions('EMPLOYEES', 'findAll')
+  @ResourcePermissions(RESOURCE, 'findAll')
   async findAll() {
-    return await this.employeesService.findAll();
+    return await this.service.findAll();
   }
 
   @Get('/:id')
+  @ResourcePermissions(RESOURCE, 'findOne')
   async findOne(
     @Param('id', ParseUUIDPipe)
     id: string,
   ) {
-    return await this.employeesService.findOne(id);
+    return await this.service.findOne(id);
   }
 }
