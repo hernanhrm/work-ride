@@ -9,7 +9,8 @@ CREATE TABLE IF NOT EXISTS users
     updated_at TIMESTAMP,
     CONSTRAINT users_id_pk PRIMARY KEY (id),
     CONSTRAINT users_role_id_fk FOREIGN KEY (role_id) REFERENCES roles (id)
-        ON UPDATE RESTRICT ON DELETE RESTRICT
+        ON UPDATE RESTRICT ON DELETE RESTRICT,
+    CONSTRAINT users_email_uk UNIQUE (email)
 );
 
 COMMENT ON TABLE employees IS 'Holds the users who will have access to the system';

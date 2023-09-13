@@ -1,6 +1,6 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class UpdateDto {
-  @IsNotEmpty({ message: 'Debes enviar el nombre de la oficina' })
+  @IsNotEmpty({ message: 'Debes enviar el nombre del rol' })
   name: string;
 }
