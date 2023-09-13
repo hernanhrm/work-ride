@@ -6,9 +6,11 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/connection';
 import { DriversModule } from './drivers/module';
 import { OfficeModule } from './offices/module';
+import { EmployeeOfficeDistanceModule } from './employee_office_distances/module';
 
 @Module({
   imports: [
+    EmployeeOfficeDistanceModule,
     OfficeModule,
     EmployeesModule,
     DatabaseModule,
