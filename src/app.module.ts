@@ -7,9 +7,11 @@ import { DatabaseModule } from './database/connection';
 import { DriversModule } from './drivers/module';
 import { OfficeModule } from './offices/module';
 import { EmployeeOfficeDistanceModule } from './employee_office_distances/module';
+import { TripsModule } from './trips/module';
 
 @Module({
   imports: [
+    TripsModule,
     EmployeeOfficeDistanceModule,
     OfficeModule,
     EmployeesModule,
