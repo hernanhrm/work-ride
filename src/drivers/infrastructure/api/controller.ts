@@ -39,7 +39,6 @@ export class DriversController {
   }
 
   // queries
-
   @Get()
   @ResourcePermissions(RESOURCE, 'findAll')
   async findAll() {
