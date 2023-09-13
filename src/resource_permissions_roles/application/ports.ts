@@ -1,4 +1,5 @@
 import { CreateDto } from '../domain/create.dto';
+import { Permission } from '../domain/permissions';
 import { Result, Results } from '../domain/query.dto';
 import { UpdateDto } from '../domain/update.dto';
 
@@ -11,4 +12,9 @@ export abstract class Storage {
   // queries
   abstract findAll(): Promise<Results>;
   abstract findOne(id: string): Promise<Result>;
+
+  abstract findPermissionsByResourceAndRole(
+    resource: string,
+    userId: string,
+  ): Promise<Permission>;
 }

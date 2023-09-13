@@ -3,6 +3,7 @@ import { UpdateDto } from '../domain/update.dto';
 import { CreateDto } from '../domain/create.dto';
 import { Storage } from './ports';
 import { Result, Results } from '../domain/query.dto';
+import { Permission } from '../domain/permissions';
 
 @Injectable()
 export class Service {
@@ -28,5 +29,12 @@ export class Service {
 
   async findOne(id: string): Promise<Result> {
     return this.storage.findOne(id);
+  }
+
+  async findPermissionsByResourceAndRole(
+    resource: string,
+    userId: string,
+  ): Promise<Permission> {
+    return this.storage.findPermissionsByResourceAndRole(resource, userId);
   }
 }

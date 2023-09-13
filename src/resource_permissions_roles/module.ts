@@ -15,5 +15,6 @@ import { Storage } from './application/ports';
       useClass: PostgresStorage,
     },
   ],
+  exports: [Service],
 })
 export class ResourcePermissionRolesModule {}

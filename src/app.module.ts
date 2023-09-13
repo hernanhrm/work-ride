@@ -13,6 +13,10 @@ import { RolesModule } from './roles/module';
 import { ResourcePermissionsModule } from './resource_permissions/module';
 import { ResourcePermissionRolesModule } from './resource_permissions_roles/module';
 import { UsersModule } from './users/module';
+import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './auth/guard';
+import { APP_GUARD } from '@nestjs/core';
+import { PermissionsGuard } from './auth/permissions.guard';
 
 @Module({
   imports: [
@@ -33,8 +37,19 @@ import { UsersModule } from './users/module';
         limit: 10,
       },
     ]),
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionsGuard,
+    },
+  ],
 })
 export class AppModule {}

@@ -11,6 +11,7 @@ import {
 import { EmployeesService } from '../../application/service';
 import { CreateEmployeeDTO } from '../../domain/create.dto';
 import { UpdateEmployeeDTO } from '../../domain/update.dto';
+import { ResourcePermissions } from 'src/auth/permissions.guard';
 
 @Controller('/v1/employees')
 export class EmployeesController {
@@ -35,7 +36,9 @@ export class EmployeesController {
   }
 
   // queries
+
   @Get()
+  @ResourcePermissions('EMPLOYEES', 'findAll')
   async findAll() {
     return await this.employeesService.findAll();
   }

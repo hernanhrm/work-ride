@@ -6,6 +6,7 @@ import {
 } from 'src/resource_permissions_roles/domain/query.dto';
 import { Injectable, Inject } from '@nestjs/common';
 import { PG_CONNECTION } from 'src/database/constants';
+import { Permission } from 'src/resource_permissions_roles/domain/permissions';
 
 const TABLE_NAME = 'resource_permissions_roles';
 
@@ -45,5 +46,26 @@ export class PostgresStorage {
       .sql<Result>`SELECT id, resource_permission_id, role_id, created_at, updated_at FROM ${this.sql(
       TABLE_NAME,
     )} WHERE id = ${id}`;
+  }
+
+  async findPermissionsByResourceAndRole(
+    resource: string,
+    userId: string,
+  ): Promise<Permission> {
+    let permission: Permission;
+    await this.sql`SELECT rp.name, rpr.permissions
+FROM resource_permissions rp
+         INNER JOIN resource_permissions_roles rpr on rp.id = rpr.resource_permission_id
+         INNER JOIN roles r on rpr.role_id = r.id
+         INNER JOIN users u on r.id = u.role_id
+    WHERE rp.name = ${resource}
+      AND u.id= ${userId}`.forEach((row) => {
+      permission = {
+        resource: row.resource,
+        permissions: row.permissions,
+      };
+    });
+
+    return permission;
   }
 }

@@ -10,5 +10,6 @@ import { RolesModule } from 'src/roles/module';
   imports: [DatabaseModule, RolesModule],
   controllers: [RouteController],
   providers: [Service, { provide: Storage, useClass: PostgresStorage }],
+  exports: [Service],
 })
 export class UsersModule {}
