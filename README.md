@@ -31,9 +31,27 @@ transportation logistics, enabling businesses of all sizes to optimize their ope
 employee commuting.
 
 ### TODOs
+
 1. Standardize response objects
 2. Set up a custom logger
 3. Fix Dependency Inversion between providers of different modules
+
+## Hexagonal Arquitecture
+
+The project was made using this architecture which consists of 3 layers to decompose our code
+
+1. Domain
+    2. We can see it as the representation of information of every functionality/table in our app
+   3. We use this layer to declare the objects needed for the CRUDs operation, reports, etc
+2. Application
+    3. All the bussiness logic related to the app goes in here, for example, calculating rates between an employee and
+       an office, auth, etc
+   4. We use it to do validations, calculations, etc
+3. Infrastructure
+    4. Any external service from our app goes here, for example the database(postgres, mysql, etc), email provider(
+       sendinblue, resend, etc), chat messaging app (slack, whatsapp)
+   5. We use it to implement our database system provider (postgres)
+       ![img.png](hex-diagram.png)
 
 ## Installation
 
