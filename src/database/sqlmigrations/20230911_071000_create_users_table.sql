@@ -13,5 +13,5 @@ CREATE TABLE IF NOT EXISTS users
     CONSTRAINT users_email_uk UNIQUE (email)
 );
 
-COMMENT ON TABLE employees IS 'Holds the users who will have access to the system';
+COMMENT ON TABLE users IS 'Holds the users who will have access to the system';
 

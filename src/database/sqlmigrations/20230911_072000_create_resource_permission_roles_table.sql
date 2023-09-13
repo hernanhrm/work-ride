@@ -13,4 +13,4 @@ CREATE TABLE IF NOT EXISTS resource_permissions_roles
         ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 
-COMMENT ON TABLE employees IS 'Holds the relation between the roles and resource permissions';
+COMMENT ON TABLE resource_permissions_roles IS 'Holds the relation between the roles and resource permissions';
