@@ -15,12 +15,26 @@ import { UpdateEmployeeDTO } from '../../domain/update.dto';
 @Controller('/v1/employees')
 export class EmployeesController {
   constructor(private employeesService: EmployeesService) {}
-
+  // commands
   @Post()
   async create(@Body() createEmployeeDto: CreateEmployeeDTO) {
     return await this.employeesService.create(createEmployeeDto);
   }
 
+  @Patch('/:id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateEmployeeDto: UpdateEmployeeDTO,
+  ) {
+    return await this.employeesService.update(id, updateEmployeeDto);
+  }
+
+  @Delete('/:id')
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.employeesService.remove(id);
+  }
+
+  // queries
   @Get()
   async findAll() {
     return await this.employeesService.findAll();
@@ -31,19 +45,6 @@ export class EmployeesController {
     @Param('id', ParseUUIDPipe)
     id: string,
   ) {
-    return this.employeesService.findOne(id);
-  }
-
-  @Patch('/:id')
-  async update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateEmployeeDto: UpdateEmployeeDTO,
-  ) {
-    return this.employeesService.update(id, updateEmployeeDto);
-  }
-
-  @Delete('/:id')
-  async remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.employeesService.remove(id);
+    return await this.employeesService.findOne(id);
   }
 }
