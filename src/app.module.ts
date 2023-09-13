@@ -8,9 +8,14 @@ import { DriversModule } from './drivers/module';
 import { OfficeModule } from './offices/module';
 import { EmployeeOfficeDistanceModule } from './employee_office_distances/module';
 import { TripsModule } from './trips/module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { RolesModule } from './roles/module';
+import { ResourcePermissionsModule } from './resource_permissions/module';
 
 @Module({
   imports: [
+    ResourcePermissionsModule,
+    RolesModule,
     TripsModule,
     EmployeeOfficeDistanceModule,
     OfficeModule,
@@ -18,6 +23,12 @@ import { TripsModule } from './trips/module';
     DatabaseModule,
     ConfigModule.forRoot({ isGlobal: true }),
     DriversModule,
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 10,
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],
