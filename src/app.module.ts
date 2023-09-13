@@ -11,9 +11,11 @@ import { TripsModule } from './trips/module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { RolesModule } from './roles/module';
 import { ResourcePermissionsModule } from './resource_permissions/module';
+import { ResourcePermissionRolesModule } from './resource_permissions_roles/module';
 
 @Module({
   imports: [
+    ResourcePermissionRolesModule,
     ResourcePermissionsModule,
     RolesModule,
     TripsModule,
