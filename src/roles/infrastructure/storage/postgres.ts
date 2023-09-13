@@ -34,9 +34,18 @@ export class PostgresStorage {
   }
 
   async findOne(id: string): Promise<Result> {
-    return await this
+    let result: Result;
+    await this
       .sql<Result>`SELECT id, name, created_at, updated_at FROM ${this.sql(
       TABLE_NAME,
-    )} WHERE id = ${id}`;
+    )} WHERE id = ${id}`.forEach((row) => {
+      result = {
+        id: row.id,
+        name: row.name,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at,
+      };
+    });
+    return result;
   }
 }
