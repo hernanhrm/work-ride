@@ -3,6 +3,7 @@
 </p>
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
   <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
@@ -24,12 +25,52 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Work Ride is a versatile transportation and payment management application that enhances efficiency for businesses by
+recording trips, driver rates, and accurately calculating distances between employees and offices. It streamlines
+transportation logistics, enabling businesses of all sizes to optimize their operations and reduce costs associated with
+employee commuting.
+
+### TODOs
+1. Standardize response objects
+2. Set up a custom logger
+3. Fix Dependency Inversion between providers of different modules
 
 ## Installation
 
 ```bash
 $ npm install
+```
+
+### Database
+
+```bash
+# install postgres
+docker compose up -d
+```
+
+```bash
+# enter the psql console to create the role and db
+docker exec -it postgres psql -U postgres
+
+# being inside psql execute the next commands:
+
+# create the user role
+CREATE ROLE workride WITH LOGIN PASSWORD 'workride';
+
+# create the db
+CREATE DATABASE workride WITH OWNER workride;
+
+```
+
+Execute the sql migrations and seeds inside `src/database/sqlmigrations` and `src/database/seed` manually or with a tool
+like [migrations](https://github.com/alexyslozada/migrations).
+
+### Environments
+
+Create a `.env` file in the root of the project
+
+```bash
+cp .env.example .env
 ```
 
 ## Running the app
@@ -45,22 +86,14 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## Api doc
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
+You can see the endpoints doc in here [Postman Doc](https://documenter.getpostman.com/view/8285806/2s9YC4VZ3N)
 
 ## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If
+you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
 ## Stay in touch
 

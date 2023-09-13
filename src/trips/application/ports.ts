@@ -1,5 +1,6 @@
 import { CreateDto } from '../domain/create.dto';
 import { Result, Results } from '../domain/query.dto';
+import { Reports } from '../domain/report.dto';
 import { UpdateDto } from '../domain/update.dto';
 
 export abstract class Storage {
@@ -11,4 +12,9 @@ export abstract class Storage {
   // queries
   abstract findAll(): Promise<Results>;
   abstract findOne(id: string): Promise<Result>;
+
+  abstract reportByRangeDate(
+    startDate: string,
+    endDate: string,
+  ): Promise<Reports>;
 }

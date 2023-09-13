@@ -3,6 +3,7 @@ import { UpdateDto } from '../domain/update.dto';
 import { CreateDto } from '../domain/create.dto';
 import { Storage } from './ports';
 import { Result, Results } from '../domain/query.dto';
+import { Reports } from '../domain/report.dto';
 
 @Injectable()
 export class Service {
@@ -28,5 +29,12 @@ export class Service {
 
   async findOne(id: string): Promise<Result> {
     return this.storage.findOne(id);
+  }
+
+  async reportByDateRange(
+    startDate: string,
+    endDate: string,
+  ): Promise<Reports> {
+    return this.storage.reportByRangeDate(startDate, endDate);
   }
 }

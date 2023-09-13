@@ -3,6 +3,7 @@ import { UpdateDto } from 'src/trips/domain/update.dto';
 import { Result, Results } from 'src/trips/domain/query.dto';
 import { Injectable, Inject } from '@nestjs/common';
 import { PG_CONNECTION } from 'src/database/constants';
+import { Reports } from 'src/trips/domain/report.dto';
 
 const TABLE_NAME = 'trips';
 
@@ -42,5 +43,21 @@ export class PostgresStorage {
       .sql<Result>`SELECT id, employee_office_distance_id, driver_id, created_at, updated_at FROM ${this.sql(
       TABLE_NAME,
     )} WHERE id = ${id}`;
+  }
+
+  async reportByRangeDate(
+    startDate: string,
+    endDate: string,
+  ): Promise<Reports> {
+    return await this.sql<Reports>`
+        SELECT d.name,
+               (sum(eod.kilometer_distance) * d.rate_per_kilometer) as total,
+               count(*)                                             as trips_count
+        FROM ${this.sql(TABLE_NAME)} AS t
+                 INNER JOIN drivers d on d.id = t.driver_id
+                 INNER JOIN employee_office_distances eod on eod.id = t.employee_office_distance_id
+        WHERE t.created_at::date BETWEEN ${startDate}::date AND ${endDate}::date
+        GROUP BY d.name, d.rate_per_kilometer
+        ORDER BY total DESC`;
   }
 }

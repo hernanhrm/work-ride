@@ -10,10 +10,12 @@ export class Service {
 
   // commands
   async create(dto: CreateDto): Promise<void> {
+    // TODO: Validate Role name does not exists
     return this.storage.create(dto);
   }
 
   async update(id: string, dto: UpdateDto): Promise<void> {
+    // TODO: Validate Role name does not exists
     return this.storage.update(id, dto);
   }
 
